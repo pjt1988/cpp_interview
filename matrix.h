@@ -20,6 +20,7 @@ class Matrix {
     //virtual Matrix& operator*(const Matrix&) = 0;
     //virtual Matrix& operator=(const Matrix&) = 0;
     //virtual Matrix& operator=(const Matrix &&) = 0;
+    virtual ~Matrix()=0;
 
     //some functions...
     virtual void fillData(size_t N, size_t M, double val) = 0; //is this efficient?

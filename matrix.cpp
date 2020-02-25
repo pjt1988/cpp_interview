@@ -1,6 +1,9 @@
 #include "matrix.h"
 #include "matrixFactory.hpp"
 
+Matrix::~Matrix(){
+  //do jack. stupid virtual descructor
+}
 
 DenseMatrix :: DenseMatrix(size_t dim){
   N = dim;
