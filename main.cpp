@@ -1,8 +1,10 @@
 #include "headers.h"
+#include "timing.h"
 #include "matrix.h"
 #include "matrixFactory.hpp"
 
 int main(){
+  Time t0;
   MatrixFactory MatFact();
 
   DenseMatrix A = DenseMatrix(10);
