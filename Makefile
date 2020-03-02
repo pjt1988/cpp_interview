@@ -1,7 +1,7 @@
 SRC_FILES := $(wildcard *.cpp)
 OBJ_FILES := $(patsubst %.cpp,%.o,$(SRC_FILES))
 LDFLAGS := 
-CPPFLAGS := 
+CPPFLAGS := -g -Wall
 CXXFLAGS := -O2
 
 Interview: $(OBJ_FILES)

@@ -16,9 +16,9 @@ class Matrix {
     //how do we store data?
     virtual ~Matrix() = 0;
     //we'll be writing pretty code now...
-    //virtual Matrix& operator+(const Matrix&) = 0;
-    //virtual Matrix& operator*(const Matrix&) = 0;
-    //virtual Matrix& operator=(const Matrix&) = 0;
+    Matrix& operator+(const Matrix&);
+    Matrix& operator*(const Matrix&);
+    Matrix& operator=(const Matrix&);
     //virtual Matrix& operator=(const Matrix &&) = 0;
 
     //some functions...
@@ -86,6 +86,9 @@ class TrashMatrix : public virtual Matrix{
 
   private:
 };
+
+bool verify_types(const Matrix& A, const Matrix& B);
+bool verify_types(const Matrix& A, const Matrix& B, const Matrix& C);
 
 
 #endif
