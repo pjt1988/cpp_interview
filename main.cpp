@@ -42,15 +42,12 @@ int main(int argc, char** argv){
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Add - %.4f s\n", elapsed.count());
-  A->printMatrix();
-  B->printMatrix();
 
   start1=std::chrono::system_clock::now();
   (*C) = (*A) * (*B);
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Mult - %.4f s\n", elapsed.count());
-  C->printMatrix();
 
 
   printf("Benchmarking Trash Matrix..\n");
@@ -78,15 +75,12 @@ int main(int argc, char** argv){
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Add - %.4f s\n", elapsed.count());
-  D->printMatrix();
-  E->printMatrix();
 
   start1=std::chrono::system_clock::now();
   (*F) = (*D) * (*E);
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Mult - %.4f s\n", elapsed.count());
-  F->printMatrix();
 
 
 
