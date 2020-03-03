@@ -110,22 +110,29 @@ DenseMatrix& DenseMatrix::operator*(const DenseMatrix& A){
   }
   const std::vector<double>& adata = A.data;
 
-  std::vector<double> tempdata(N);
+  std::vector<double> tempdata(TILE*N);
 
   for(size_t ii=0;ii<N;ii+=TILE){
     size_t imax = ii + TILE > N ? N : ii + TILE;
+    size_t count = 0;
+    for(size_t tt=ii;tt<imax;++tt){
+      for(size_t ll=0;ll<N;++ll){
+        tempdata[count++] = data[tt*N + ll];
+      }
+    }
     for(size_t jj=0;jj<N;jj+=TILE){
       size_t jmax = jj + TILE > N ? N : jj + TILE;
       for(size_t kk=0;kk<N;kk+=TILE){
         size_t kmax = kk + TILE > N ? N : kk + TILE;
 
-        for(size_t i=ii;i<imax;++i){
+        size_t tt=0;
+        for(size_t i=ii;i<imax &&  tt<TILE;++i, ++tt){
           size_t row = i*N;
-          std::copy(data.begin() + row, data.begin() + (i+1)*N, tempdata.begin());
           for(size_t j=jj;j<jmax;++j){
             double temp = 0;
-            for(size_t k=kk;k<kmax;++k){
-              temp += tempdata[k] * adata[k*N + j];
+            size_t ll=0;
+            for(size_t k=kk;k<kmax && ll<TILE;++k, ++ll){
+              temp += tempdata[tt*N + ll] * adata[k*N + j];
             }
             data[row + j] = temp;
           }

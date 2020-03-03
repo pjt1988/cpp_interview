@@ -1,3 +1,6 @@
+#ifndef _VECTOR_H_
+#define _VECTOR_H_
+
 #include "headers.h"
 
 //note, templates are stupid. they cause bloat, without generally being useful. avoid if possible
@@ -5,13 +8,30 @@
 //is kinda fun to experiment with sparse vectors. what is a bcsr vector anyway? a banded vector?
 
 
-template <class T>
+//template <class T>
 class Vector{
   protected:
     std::string type;
 
   public:
     virtual ~Vector() = 0;
-    void printVector() = 0;
+    virtual void printVector() = 0;
 
 };
+
+
+class DenseVector : public virtual Vector{
+
+  protected:
+    //std::vector<T> data;
+
+  public:
+    DenseVector(size_t dim);
+    ~DenseVector();
+
+
+};
+
+
+
+#endif
