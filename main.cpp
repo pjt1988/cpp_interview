@@ -5,7 +5,7 @@
 
 int main(int argc, char** argv){
   double lower_bound = 0;
-  double upper_bound = 100;
+  double upper_bound = 4;
   std::uniform_real_distribution<double> unif(lower_bound,upper_bound);
   std::default_random_engine re;
 
@@ -42,12 +42,15 @@ int main(int argc, char** argv){
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Add - %.4f s\n", elapsed.count());
+  A->printMatrix();
+  B->printMatrix();
 
   start1=std::chrono::system_clock::now();
   (*C) = (*A) * (*B);
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Mult - %.4f s\n", elapsed.count());
+  C->printMatrix();
 
 
   printf("Benchmarking Trash Matrix..\n");
@@ -75,12 +78,15 @@ int main(int argc, char** argv){
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Add - %.4f s\n", elapsed.count());
+  D->printMatrix();
+  E->printMatrix();
 
   start1=std::chrono::system_clock::now();
   (*F) = (*D) * (*E);
   end1 = std::chrono::system_clock::now();
   elapsed = end1 - start1;
   printf("Mult - %.4f s\n", elapsed.count());
+  F->printMatrix();
 
 
 

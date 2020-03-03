@@ -82,12 +82,14 @@ DenseMatrix :: ~DenseMatrix(){
 
 DenseMatrix :: DenseMatrix(DenseMatrix& A){
   N = A.N;
-  data = A.data; //automatic deep copy!
+  data = A.data; //automatic deep copy
+  this->type="matrix_dense";
 }
 
 DenseMatrix :: DenseMatrix(DenseMatrix &&A){
   N = A.N;
   data = std::move(A.data);
+  this->type = "matrix_dense";
 }
 
 DenseMatrix& DenseMatrix::operator+(const DenseMatrix& A){
@@ -108,6 +110,8 @@ DenseMatrix& DenseMatrix::operator*(const DenseMatrix& A){
   }
   const std::vector<double>& adata = A.data;
 
+  std::vector<double> tempdata(N);
+
   for(size_t ii=0;ii<N;ii+=TILE){
     size_t imax = ii + TILE > N ? N : ii + TILE;
     for(size_t jj=0;jj<N;jj+=TILE){
@@ -116,13 +120,14 @@ DenseMatrix& DenseMatrix::operator*(const DenseMatrix& A){
         size_t kmax = kk + TILE > N ? N : kk + TILE;
 
         for(size_t i=ii;i<imax;++i){
+          size_t row = i*N;
+          std::copy(data.begin() + row, data.begin() + (i+1)*N, tempdata.begin());
           for(size_t j=jj;j<jmax;++j){
-            size_t col = j*N;
             double temp = 0;
             for(size_t k=kk;k<kmax;++k){
-              temp += data[i+k*N] * adata[k + col];
+              temp += tempdata[k] * adata[k*N + j];
             }
-            data[i+col] = temp;
+            data[row + j] = temp;
           }
         }
       }
@@ -195,6 +200,13 @@ TrashMatrix :: ~TrashMatrix(){
 TrashMatrix :: TrashMatrix(TrashMatrix& A){
   N = A.N;
   //if we can't break the compiler to do shallow copying..
+   data = new double*[N];
+  for(size_t i=0;i<N;i++){ //yes, even post-increment in Trash!
+    data[i] = new double[N];
+    for(size_t j=0;j<N;j++) data[i][j] = 0.0;
+  }
+  this->type = "matrix_trash";
+  
   for(size_t i=0;i<N;i++){
     for(size_t j=0;j<N;j++){
       data[j][i] = A.data[j][i]; 
@@ -248,16 +260,20 @@ TrashMatrix& TrashMatrix::operator*(const TrashMatrix& A){
     return *this;
   }
   double** adata = A.data;
+  TrashMatrix temp(*this);
+  double* tempdata = new double[N];;
 
   for(size_t i=0;i<N;i++){
+    for(size_t tt=0;tt<N;tt++) tempdata[tt] = data[i][tt];
     for(size_t j=0;j<N;j++){
       double temp = 0.0;
       for(size_t k=0;k<N;k++){
-        temp += data[i][k] * adata[k][j];
+        temp += tempdata[k] * adata[k][j];
       }
       data[i][j] = temp;
     }
   }
+  delete[] tempdata;
   return *this;
 }
 
