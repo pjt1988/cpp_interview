@@ -1,5 +1,5 @@
 #include "matrix.h"
-#include "matrixFactory.hpp"
+#include "functions.h"
 
 #define TILE 4
 
@@ -77,7 +77,7 @@ DenseMatrix :: DenseMatrix(size_t dim){
 }
 
 DenseMatrix :: ~DenseMatrix(){
-  data.clear(); //we do not need this. why?
+  data.clear(); 
 }
 
 DenseMatrix :: DenseMatrix(DenseMatrix& A){
@@ -108,8 +108,9 @@ DenseMatrix& DenseMatrix::operator*(const DenseMatrix& A){
     printf("Dimension mismatch!\n");
     exit(1);
   }
+  //slow-ish inplace matmult. could just set up a new matrix and return that instead. 
+  //better as an *= overload? yeah...
   const std::vector<double>& adata = A.data;
-
   std::vector<double> tempdata(TILE*N);
 
   for(size_t ii=0;ii<N;ii+=TILE){

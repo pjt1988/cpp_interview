@@ -87,8 +87,35 @@ class TrashMatrix : public virtual Matrix{
   private:
 };
 
-bool verify_types(const Matrix& A, const Matrix& B);
-bool verify_types(const Matrix& A, const Matrix& B, const Matrix& C);
+class BCSRMatrix : public virtual Matrix{
+
+/*
+ * BCSR - blocked+compressed sparse row-major matrix
+ * we want
+ *  -fixed block dim
+ *  -variable and adjustable sparsity pattern
+ *  -O(N) linalg ops if sparse
+ *  -prescreening
+ */
+public:
+    BCSRMatrix& operator+(const BCSRMatrix&); 
+    BCSRMatrix* operator+(const BCSRMatrix*);
+    BCSRMatrix& operator*(const BCSRMatrix&);
+    //rule of 3 - constructor, destructor, copy constructor+copy assign
+    BCSRMatrix(size_t dim);
+    BCSRMatrix(BCSRMatrix&);
+    ~BCSRMatrix();
+    BCSRMatrix& operator=(const BCSRMatrix&);
+    //rule of 5 - rule of 3 + move constructor + move assign
+    BCSRMatrix(BCSRMatrix &&);
+    BCSRMatrix& operator=(const BCSRMatrix &&);
+
+    void fillData(size_t N, size_t M, double val) override;
+    void printMatrix() override;
+   
+
+
+};
 
 
 #endif
