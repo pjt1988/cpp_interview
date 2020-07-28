@@ -1,15 +1,14 @@
-OBJS=main.o
-CC=g++
-DEBG=-g  
-CFLAG=-c $(DEBUG)
-LFLAGS=-Wall -O3 $(DEBUG)
-PFLAGS=-fopenmp -lpthread $(DEBUG)
+SRC_FILES := $(wildcard *.cpp)
+OBJ_FILES := $(patsubst %.cpp,%.o,$(SRC_FILES))
+LDFLAGS := -fopenmp
+CXXFLAGS := -fopenmp -Wall -g
+OPTFLAGS := -O1
 
-all: $(OBJS)
-	$(CC) -o "mc_test" $(LFLAGS) $(OBJS) $(PFLAGS)
+mc_test: $(OBJ_FILES)
+	g++ $(CXXFLAGS) $(OPTFLAGS) -o $@ $^
 
-main.o: main.cpp
-	$(CC) -c $(DEGB) main.cpp $(PFLAGS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
+	g++ $(CXXFLAGS) $(OPTFLAGS) -c $@ $<
 
 
 clean: 
